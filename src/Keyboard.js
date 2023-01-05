@@ -20,6 +20,10 @@ class Keyboard extends React.Component {
     useTouchEvents: PropTypes.bool,
     // If width is not provided, must have fixed width and height in parent container
     width: PropTypes.number,
+    keyStyles: PropTypes.arrayOf(PropTypes.shape({
+      midiNumber: PropTypes.number.isRequired,
+      className: PropTypes.string.isRequired,
+    })),
   };
 
   static defaultProps = {
@@ -69,12 +73,14 @@ class Keyboard extends React.Component {
         {this.getMidiNumbers().map((midiNumber) => {
           const { note, isAccidental } = MidiNumbers.getAttributes(midiNumber);
           const isActive = !this.props.disabled && this.props.activeNotes.includes(midiNumber);
+          const keyStyle = this.props.customKeyStyles.find((keyStyle) => keyStyle.midiNumber === midiNumber);
           return (
             <Key
               naturalKeyWidth={naturalKeyWidth}
               midiNumber={midiNumber}
               noteRange={this.props.noteRange}
               active={isActive}
+              keyStyle={keyStyle}
               accidental={isAccidental}
               disabled={this.props.disabled}
               onPlayNoteInput={this.props.onPlayNoteInput}

@@ -23,6 +23,10 @@ class ControlledPiano extends React.Component {
         midiNumber: PropTypes.number.isRequired,
       }),
     ),
+    customKeyStyles: PropTypes.arrayOf(PropTypes.shape({
+      midiNumber: PropTypes.number.isRequired,
+      className: PropTypes.string.isRequired,
+    })),
   };
 
   static defaultProps = {
@@ -172,6 +176,7 @@ class ControlledPiano extends React.Component {
           onPlayNoteInput={this.onPlayNoteInput}
           onStopNoteInput={this.onStopNoteInput}
           activeNotes={this.props.activeNotes}
+          keyStyles={this.props.customKeyStyles}
           className={this.props.className}
           disabled={this.props.disabled}
           width={this.props.width}

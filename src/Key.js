@@ -18,6 +18,10 @@ class Key extends React.Component {
     accidentalWidthRatio: PropTypes.number.isRequired,
     pitchPositions: PropTypes.object.isRequired,
     children: PropTypes.node,
+    keyStyle: PropTypes.shape({
+      midiNumber: PropTypes.number.isRequired,
+      className: PropTypes.string.isRequired,
+    }),
   };
 
   static defaultProps = {
@@ -71,6 +75,7 @@ class Key extends React.Component {
       useTouchEvents,
       accidental,
       active,
+      keyStyle,
       disabled,
       children,
     } = this.props;
@@ -84,6 +89,7 @@ class Key extends React.Component {
           'ReactPiano__Key--natural': !accidental,
           'ReactPiano__Key--disabled': disabled,
           'ReactPiano__Key--active': active,
+          ...(keyStyle ? { [keyStyle.className]: true } : {})
         })}
         style={{
           left: ratioToPercentage(this.getRelativeKeyPosition(midiNumber) * naturalKeyWidth),
