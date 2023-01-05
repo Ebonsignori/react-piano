@@ -20,10 +20,12 @@ class Keyboard extends React.Component {
     useTouchEvents: PropTypes.bool,
     // If width is not provided, must have fixed width and height in parent container
     width: PropTypes.number,
-    keyStyles: PropTypes.arrayOf(PropTypes.shape({
-      midiNumber: PropTypes.number.isRequired,
-      className: PropTypes.string.isRequired,
-    })),
+    keyStyles: PropTypes.arrayOf(
+      PropTypes.shape({
+        midiNumber: PropTypes.number.isRequired,
+        className: PropTypes.string.isRequired,
+      })
+    ),
   };
 
   static defaultProps = {
@@ -31,7 +33,7 @@ class Keyboard extends React.Component {
     gliss: false,
     useTouchEvents: false,
     keyWidthToHeight: 0.33,
-    renderNoteLabel: () => {},
+    renderNoteLabel: () => { },
   };
 
   // Range of midi numbers on keyboard
@@ -73,7 +75,12 @@ class Keyboard extends React.Component {
         {this.getMidiNumbers().map((midiNumber) => {
           const { note, isAccidental } = MidiNumbers.getAttributes(midiNumber);
           const isActive = !this.props.disabled && this.props.activeNotes.includes(midiNumber);
-          const keyStyle = this.props.keyStyles?.length && this.props.keyStyles.find((keyStyle) => keyStyle?.midiNumber === midiNumber);
+          const keyStyle = this.props.keyStyles && this.props.keyStyles.length
+            && this.props.keyStyles.find(
+              (keyStyle) =>
+                typeof keyStyle === "object"
+                && keyStyle.midiNumber === midiNumber
+            );
           return (
             <Key
               naturalKeyWidth={naturalKeyWidth}
@@ -92,10 +99,10 @@ class Keyboard extends React.Component {
               {this.props.disabled
                 ? null
                 : this.props.renderNoteLabel({
-                    isActive,
-                    isAccidental,
-                    midiNumber,
-                  })}
+                  isActive,
+                  isAccidental,
+                  midiNumber,
+                })}
             </Key>
           );
         })}
